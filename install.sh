@@ -38,10 +38,8 @@ chmod g+w $WISE_BASE_DIR
 
 echo ""
 ls -lhd $WISE_BASE_DIR
-echo "ADMIN_USER: "
+echo "ADMIN_USER: $WISE_ADMIN_USER"
 read -n 1 -s -r -p "Press any key to continue..."
-exit
-
 
 sudo -H -u $WISE_ADMIN_USER bash -c 'git clone git@github.com:WiseDb/Customer_Master.git $WISE_BASE_DIR'
 
