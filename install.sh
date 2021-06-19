@@ -36,7 +36,14 @@ mkdir -p $WISE_BASE_DIR
 chown -R $WISE_ADMIN_USER.wisedb $WISE_BASE_DIR
 chmod g+w $WISE_BASE_DIR
 
-sudo -H -u $WISE_ADMIN_USER bash -c 'git clone git@github.com:WiseDb/Customer_Master.git $WISE_BASE $WISE_BASE_DIR'
+echo ""
+ls -lhd $WISE_BASE_DIR
+echo "ADMIN_USER: "
+read -n 1 -s -r -p "Press any key to continue..."
+exit
+
+
+sudo -H -u $WISE_ADMIN_USER bash -c 'git clone git@github.com:WiseDb/Customer_Master.git $WISE_BASE_DIR'
 
 # Configurações finais do git
 sudo -H -u $WISE_ADMIN_USER bash -c 'git config --global push.default simple'
