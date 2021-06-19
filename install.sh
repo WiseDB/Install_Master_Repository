@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo -e -n "Nome do diretório BASE da Wise (ex: /opt/WiseDb): "
 read WDIR
 echo -e -n "Nome do usuário ADMIN da Wise (ex: admin_wise): "
