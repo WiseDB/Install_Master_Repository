@@ -1,20 +1,30 @@
 #!/bin/bash
 
+# Valida o usuário que está executando o script
+if [ "$(whoami)" != "root" ]
+then
+	echo -e "ERRO: Este script deve ser executado com o usuário ROOT!"
+	exit 1
+fi
+
 clear;
+echo -e "••••••••••••••••••••••••••••••••••••••••••••••••••••\n"
 echo -e "Instalação do repositório da Wise Database Solutions"
 echo -e "••••••••••••••••••••••••••••••••••••••••••••••••••••\n"
 echo -e -n "Nome do diretório BASE da Wise (ex: /opt/WiseDb): "
 read WDIR
 echo -e -n "Nome do usuário ADMIN da Wise (ex: admin_wise): "
 read WUSER
+echo -e -n "Nome do GRUPO principal da Wise (ex: wisedb): "
+read WGROUP
 
 ################################################
 #TO-DO: Check if user is ROOT
 ################################################
 
-export WISE_BASE_DIR=/opt/WiseDb
-export WISE_ADMIN_USER=adm_wise
-export WISE_ADMIN_GROUP=wisedb
+export WISE_BASE_DIR=$WDIR
+export WISE_ADMIN_USER=$USER
+export WISE_ADMIN_GROUP=$WGROUP
 
 
 yum -y install screen
