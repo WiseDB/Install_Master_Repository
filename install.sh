@@ -22,7 +22,6 @@ export WISE_BASE_DIR=$WDIR
 export WISE_ADMIN_USER=$WUSER
 export WISE_ADMIN_GROUP=$WGROUP
 
-
 echo -e "\nInstalando pacotes necessários\n"
 #yum -y install screen
 #yum -y install git
@@ -31,7 +30,7 @@ echo -e "\nInstalando pacotes necessários\n"
 # Create Groups and Users
 echo -e "\nCriando estrutura de Usuários, Grupos e Diretórios\n"
 groupadd $WISE_ADMIN_GROUP
-useradd $WISE_ADMIN_USER -g $WISE_ADMIN_GROUP -G wheel,oinstall && usermod --password $(openssl passwd -1 nomanager) admin_wise && echo -e "export WISE_BASE_DIR=$WISE_BASE_DIR" >> ~/.bash_profile 
+useradd $WISE_ADMIN_USER -g $WISE_ADMIN_GROUP -G wheel,oinstall && usermod --password $(openssl passwd -1 nomanager) admin_wise && echo -e "export WISE_BASE_DIR=$WISE_BASE_DIR" >> /home/$WISE_ADMIN_USER/.bash_profile 
 #useradd rodrigo_wise -g $WISE_ADMIN_GROUP -G wheel,oinstall
 #usermod --password $(openssl passwd -1 nomanager) rodrigo_wise
 #useradd fernando_wise -g $WISE_ADMIN_GROUP -G wheel,oinstall
@@ -54,7 +53,7 @@ echo ""
 
 echo -e "\e[91m"
 echo -e "\n\nIMPORTANTE: Digite o comando abaixo para clonar o repositório com o usuário $WISE_ADMIN_USER.\n"
-echo -e "git clone git@github.com:WiseDb/Customer_Master.git $WISE_BASE_DIR && $WISE_BASE_DIR/bin/install.sh"
+echo -e "git clone git@github.com:WiseDb/Customer_Master.git $WISE_BASE_DIR && $WISE_BASE_DIR/bin/install.sh $WISE_BASE_DIR" 
 echo -e "\e[0m"
 su - $WISE_ADMIN_USER
 
