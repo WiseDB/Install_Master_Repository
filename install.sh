@@ -30,7 +30,7 @@ echo -e "\nInstalando pacotes necessários\n"
 # Create Groups and Users
 echo -e "\nCriando estrutura de Usuários, Grupos e Diretórios\n"
 groupadd $WISE_ADMIN_GROUP
-useradd $WISE_ADMIN_USER -g $WISE_ADMIN_GROUP -G wheel,oinstall && usermod --password $(openssl passwd -1 nomanager) admin_wise && echo -e "export WISE_BASE_DIR=$WISE_BASE_DIR" >> /home/$WISE_ADMIN_USER/.bash_profile 
+useradd $WISE_ADMIN_USER -g $WISE_ADMIN_GROUP -G wheel,oinstall && usermod --password $(openssl passwd -1 nomanager) admin_wise 
 #useradd rodrigo_wise -g $WISE_ADMIN_GROUP -G wheel,oinstall
 #usermod --password $(openssl passwd -1 nomanager) rodrigo_wise
 #useradd fernando_wise -g $WISE_ADMIN_GROUP -G wheel,oinstall
