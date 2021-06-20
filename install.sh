@@ -8,21 +8,29 @@ read WDIR
 echo -e -n "Nome do usuário ADMIN da Wise (ex: admin_wise): "
 read WUSER
 
-export WISE_BASE_DIR=$WDIR
-export WISE_ADMIN_USER=$WUSER
+################################################
+#TO-DO: Check if user is ROOT
+################################################
 
-# as ROOT: create Groups and Users
-groupadd wisedb
-useradd $WISE_ADMIN_USER -g wisedb -G wheel
-usermod --password $(openssl passwd -1 nomanager) $WISE_ADMIN_USER
+export WISE_BASE_DIR=/opt/WiseDb
+export WISE_ADMIN_USER=adm_wise
+export WISE_ADMIN_GROUP=wisedb
 
-# Criação dos usuários da WiseDb
-#useradd rodrigo_wise -g wisedb -G wheel,oinstall,dba
-#usermod --password $(openssl passwd -1 nomanager) rodrigo_wise
-#useradd fernando_wise -g wisedb -G wheel,oinstall,dba
-#usermod --password $(openssl passwd -1 nomanager) fernando_wise
-#useradd caio_wise -g wisedb -G oinstall,dba
-#usermod --password $(openssl passwd -1 nomanager) caio_wise
+
+yum -y install screen
+yum -y install git
+yum -y install mutt
+
+# Create Groups and Users
+groupadd $WISE_ADMIN_GROUP
+useradd $WISE_ADMIN_USER -g $WISE_ADMIN_GROUP -G wheel,oinstall
+usermod --password $(openssl passwd -1 nomanager) admin_wise
+useradd rodrigo_wise -g $WISE_ADMIN_GROUP -G wheel,oinstall
+usermod --password $(openssl passwd -1 nomanager) rodrigo_wise
+useradd fernando_wise -g $WISE_ADMIN_GROUP -G wheel,oinstall
+usermod --password $(openssl passwd -1 nomanager) fernando_wise
+useradd caio_wise -g $WISE_ADMIN_GROUP -G oinstall
+usermod --password $(openssl passwd -1 nomanager) caio_wise
 
 sudo -H -u $WISE_ADMIN_USER bash -c 'ssh-keygen -b 2048 -f ~/.ssh/id_rsa -t rsa -q -N ""'
 sudo -H -u $WISE_ADMIN_USER bash -c 'echo -e "\n\nEntre no repositório da Wise: \e[91mhttps://github.com/WiseDB/Customer_Master/settings/keys\e[0m"'
@@ -41,10 +49,9 @@ ls -lhd $WISE_BASE_DIR
 echo "ADMIN_USER: $WISE_ADMIN_USER"
 read -n 1 -s -r -p "Press any key to continue..."
 
-sudo -H -u $WISE_ADMIN_USER bash -c 'git clone git@github.com:WiseDb/Customer_Master.git $WISE_BASE_DIR'
-
-# Configurações finais do git
-sudo -H -u $WISE_ADMIN_USER bash -c 'git config --global push.default simple'
-sudo -H -u $WISE_ADMIN_USER bash -c 'git config --global user.email "wisedbadm@gmail.com"'
-sudo -H -u $WISE_ADMIN_USER bash -c 'git config --global user.name  "Admin WiseDb"'
+echo -e "\e[91m"
+echo -e "\n\nIMPORTANTE: Digite o comando abaixo para clonar o repositório com o usuário $WISE_ADMIN_USER.\n"
+echo -e "git clone git@github.com:WiseDb/Customer_Master.git $WISE_BASE_DIR"
+echo -e "\e[0m"
+su - $WISE_ADMIN_USER
 
