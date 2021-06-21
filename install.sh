@@ -66,7 +66,8 @@ mkdir -p $WISE_BASE_DIR/customer
 cd $WISE_BASE_DIR
 git init
 git remote add origin git@github.com:WiseDB/Customer_Master.git
-git branch --set-upstream-to=origin/master master  #Isso vai tornar o comando PULL não-interativo durante o auto_update_master.sh
+#Isso vai tornar o comando PULL não-interativo durante o auto_update_master.sh
+git branch --set-upstream-to=origin/master master
 chown -R $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $WISE_BASE_DIR
 chown oracle.oinstall $WISE_BASE_DIR/customer
 
