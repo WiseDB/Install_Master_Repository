@@ -11,12 +11,15 @@ clear;
 echo -e "••••••••••••••••••••••••••••••••••••••••••••••••••••"
 echo -e "Instalação do repositório da Wise Database Solutions"
 echo -e "••••••••••••••••••••••••••••••••••••••••••••••••••••\n"
-echo -e -n "Nome do diretório BASE da Wise (ex: /opt/WiseDb): "
+echo -e -n "Nome do diretório BASE da Wise (default: /opt/WiseDb): "
 read WDIR
-echo -e -n "Nome do usuário ADMIN da Wise (ex: admin_wise): "
+[ -z "$WDIR" ] && WDIR=/opt/WiseDb
+echo -e -n "Nome do usuário ADMIN da Wise (default: admin_wise): "
 read WUSER
-echo -e -n "Nome do GRUPO principal da Wise (ex: wisedb): "
+[ -z "$WUSER" ] && WUSER=admin_wise
+echo -e -n "Nome do GRUPO principal da Wise (default: wisedb): "
 read WGROUP
+[ -z "$WGROUP" ] && WGROUP=wisedb
 
 export WISE_BASE_DIR=$WDIR
 export WISE_ADMIN_USER=$WUSER
