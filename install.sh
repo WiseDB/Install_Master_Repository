@@ -85,11 +85,11 @@ chown $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $INSTALL_SCRIPT
 chmod 755 $INSTALL_SCRIPT
 echo -e "\n\nExecute o script \"download_master.sh\" para baixar o repositório.\n"
 #echo -e "\e[91m"
-echo -e "digite:\e[91m ~/download_master.sh \e[0m\n" 
+echo -e "digite:\e[91m ~/download_master.sh [ENTER]\e[0m\n" 
+echo -e "        exit [ENTER]"
 #echo -e "\e[0m"
 su $WISE_ADMIN_USER
 
-su oracle
 clear
 echo -e "Você está logado com o usuário \"oracle\""
 echo -e "Siga os passos abaixo para criar a área de configuração do cliente:\n"
@@ -110,6 +110,7 @@ echo -e "     e faça as configurações necessárias.\n"
 echo -e "  8) Copie o template \e[34m.SID.db.cfg.template\e[0m para um arquivo no formato \e[34mSID.db.cfg\e[0m"
 echo -e "     e faça as configurações necessárias."
 echo -e "     OBS: Troque a string \"SID\" pelo nome apropriado da instância.\n"
+su oracle
 
 echo -e "Voltando ao root."
 
