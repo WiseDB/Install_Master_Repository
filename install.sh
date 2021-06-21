@@ -44,6 +44,12 @@ echo -e "\n\n#Parametros para carga dos scripts da Wise" >> $BASH_PROFILE
 echo -e "export WISE_BASE_DIR=$WISE_BASE_DIR" >> $BASH_PROFILE
 echo -e "source $WISE_BASE_DIR/bin/wisedb_library.sh" >> $BASH_PROFILE
 
+# Configura o .bash_profile para o usuário ORACLE.
+BASH_PROFILE=/home/oracle/.bash_profile
+echo -e "\n\n#Parametros para carga dos scripts da Wise" >> $BASH_PROFILE
+echo -e "export WISE_BASE_DIR=$WISE_BASE_DIR" >> $BASH_PROFILE
+echo -e "source $WISE_BASE_DIR/bin/wisedb_library.sh" >> $BASH_PROFILE
+
 # Verifica se o usuário "oracle" já possui o par de chaves SSH
 if [ -f /home/oracle/.ssh/id_rsa.pub ]; then
         echo -e "As chaves do usuário ORACLE já existem."
