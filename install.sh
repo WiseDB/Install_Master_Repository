@@ -89,4 +89,5 @@ echo -e "\n\nExecute o script \"install.sh\" para finalizar a instalação.\n"
 echo -e "digite:\e[91m ~/install_wise.sh \e[0m\n" 
 #echo -e "\e[0m"
 su $WISE_ADMIN_USER
+echo -e "Voltando ao root."
 
