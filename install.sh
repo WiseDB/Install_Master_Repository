@@ -80,13 +80,13 @@ echo ""
 
 #GIT_COMMAND="git clone git@github.com:WiseDb/Customer_Master.git $WISE_BASE_DIR && $WISE_BASE_DIR/bin/install.sh $WISE_BASE_DIR"  
 GIT_COMMAND="cd $WISE_BASE_DIR && git pull origin master"  
-INSTALL_SCRIPT=/home/$WISE_ADMIN_USER/install.sh
+INSTALL_SCRIPT=/home/$WISE_ADMIN_USER/install_wise.sh
 echo -e "$GIT_COMMAND" > $INSTALL_SCRIPT
 chown $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $INSTALL_SCRIPT
 chmod 755 $INSTALL_SCRIPT
 echo -e "\n\nExecute o script \"install.sh\" para finalizar a instalação.\n"
 #echo -e "\e[91m"
-echo -e "digite:\e[91m ./install.sh \e[0m\n" 
+echo -e "digite:\e[91m ~/install_wise.sh \e[0m\n" 
 #echo -e "\e[0m"
 su $WISE_ADMIN_USER
 
