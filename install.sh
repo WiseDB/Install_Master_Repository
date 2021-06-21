@@ -78,15 +78,14 @@ echo ""
 read -n 1 -s -r -p "Após adicionar a chave SSH, tecle algo para continuar..."
 echo ""
 
-GIT_COMMAND="cd $WISE_BASE_DIR && git pull origin master && exit"  
+GIT_COMMAND="cd $WISE_BASE_DIR && git pull origin master && echo -e \"\e[91m Digite \"exit\" para seguir com os próximos passos.\e[0m\" "  
 INSTALL_SCRIPT=/home/$WISE_ADMIN_USER/download_master.sh
 echo -e "$GIT_COMMAND" > $INSTALL_SCRIPT
 chown $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $INSTALL_SCRIPT
 chmod 755 $INSTALL_SCRIPT
 echo -e "\n\nExecute o script \"download_master.sh\" para baixar o repositório.\n"
 #echo -e "\e[91m"
-echo -e "digite:\e[91m ~/download_master.sh [ENTER]\e[0m\n" 
-echo -e "        exit [ENTER]"
+echo -e "digite:\e[91m ~/download_master.sh\e[0m\n" 
 #echo -e "\e[0m"
 su $WISE_ADMIN_USER
 
