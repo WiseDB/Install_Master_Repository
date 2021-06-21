@@ -80,7 +80,7 @@ echo ""
 read -n 1 -s -r -p "Após adicionar a chave SSH, tecle algo para continuar..."
 echo ""
 
-GIT_COMMAND="cd $WISE_BASE_DIR && git pull origin master && echo -e \"\e[91m Digite \"exit\" para seguir com os próximos passos.\e[0m\" "  
+GIT_COMMAND="cd $WISE_BASE_DIR && git pull origin master && echo -e \"Digite \e[91m'exit'\e[0m para seguir com os próximos passos.\" "  
 INSTALL_SCRIPT=/home/$WISE_ADMIN_USER/download_master.sh
 echo -e "$GIT_COMMAND" > $INSTALL_SCRIPT
 chown $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $INSTALL_SCRIPT
@@ -103,7 +103,7 @@ echo -e "     Digite o caminho para página das chaves SSH:"
 echo -e "     \e[34mhttps://github.com/WiseDB/Customer_NomeEmpresa/settings/keys\e[0m"
 echo -e "     $(cat /home/oracle/.ssh/id_rsa.pub)\n"
 echo -e "  5) Crie um clone através do comando abaixo:"
-echo -e "     git clone git@github.com:WiseDB/Customer_NomeEmpresa.git $WISE_BASE_DIR/customer\n"
+echo -e "     git clone git@github.com:WiseDB/\e[34mCustomer_NomeEmpresa\e[0m.git $WISE_BASE_DIR/customer\n"
 echo -e "  6) Entre no diretório de configuração: "
 echo -e "     cd $WISE_BASE_DIR/customer/config\n"
 echo -e "  7) Copie o template \e[34m.customer_info.cfg.template\e[0m para um arquivo de nome \e[34mcustomer.cfg\e[0m"
@@ -111,8 +111,10 @@ echo -e "     e faça as configurações necessárias.\n"
 echo -e "  8) Copie o template \e[34m.SID.db.cfg.template\e[0m para um arquivo no formato \e[34mSID.db.cfg\e[0m"
 echo -e "     e faça as configurações necessárias."
 echo -e "     OBS: Troque a string \"SID\" pelo nome apropriado da instância.\n"
+echo -e "Digite \e[91m'exit'\e[0m para finalizar o processo de instalação."
+
 su oracle
 
-echo -e "Voltando ao root."
+echo -e "Você está novamente logado com o ROOT."
 
 
