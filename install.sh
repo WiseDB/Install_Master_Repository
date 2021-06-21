@@ -79,5 +79,5 @@ echo -e "\n\nExecute o script \"install.sh\" para finalizar a instalação.\n"
 #echo -e "\e[91m"
 echo -e "digite:\e[91m ./install.sh \e[0m\n" 
 #echo -e "\e[0m"
-su - $WISE_ADMIN_USER
+su $WISE_ADMIN_USER
 
