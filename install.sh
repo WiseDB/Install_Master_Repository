@@ -111,7 +111,7 @@ echo -e "     e faça as configurações necessárias.\n"
 echo -e "  8) Copie o template \e[34m.SID.db.cfg.template\e[0m para um arquivo no formato \e[34mSID.db.cfg\e[0m"
 echo -e "     e faça as configurações necessárias."
 echo -e "     OBS: Troque a string \"SID\" pelo nome apropriado da instância.\n"
-echo -e "Digite \e[91m'exit'\e[0m para finalizar o processo de instalação."
+echo -e "Após a execução dos passos acima, digite \e[91m'exit'\e[0m para finalizar o processo de instalação.\n"
 
 su oracle
 
