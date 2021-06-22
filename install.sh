@@ -20,10 +20,15 @@ read WUSER
 echo -e -n "Nome do GRUPO principal da Wise (default: wisedb): "
 read WGROUP
 [ -z "$WGROUP" ] && WGROUP=wisedb
+echo -e -n "Nome do REPOSITÓRIO GitHub do cliente (ex: Customer_\e[34mNomeEmpresa\e[0m): "
+read WREPO
+[ -z "$WREPO" ] && WREPO=NomeEmpresa
+
 
 export WISE_BASE_DIR=$WDIR
 export WISE_ADMIN_USER=$WUSER
 export WISE_ADMIN_GROUP=$WGROUP
+export WISE_REPOSITORY=$WREPO
 
 echo -e "\nInstalando pacotes necessários\n"
 yum -y install screen
@@ -60,16 +65,8 @@ fi
 
 # Criação e permissão do diretório
 mkdir -p $WISE_BASE_DIR
-chown -R $WISE_ADMIN_USER.wisedb $WISE_BASE_DIR
-chmod g+w $WISE_BASE_DIR
-mkdir -p $WISE_BASE_DIR/customer
-cd $WISE_BASE_DIR
-git init
-git remote add origin git@github.com:WiseDB/Customer_Master.git
-#Isso vai tornar o comando PULL não-interativo durante o auto_update_master.sh
-git branch --set-upstream-to=origin/master master
 chown -R $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $WISE_BASE_DIR
-chown oracle.oinstall $WISE_BASE_DIR/customer
+chmod g+w $WISE_BASE_DIR
 
 # Configuração das chaves SSH no repositório Customer_Master
 sudo -H -u $WISE_ADMIN_USER bash -c 'ssh-keygen -b 2048 -f ~/.ssh/id_rsa -t rsa -q -N ""'
@@ -80,7 +77,7 @@ echo ""
 read -n 1 -s -r -p "Após adicionar a chave SSH, tecle algo para continuar..."
 echo ""
 
-GIT_COMMAND="cd $WISE_BASE_DIR && git pull origin master && echo -e \"Digite \e[91m'exit'\e[0m para seguir com os próximos passos.\" "  
+GIT_COMMAND="git clone git@github.com:WiseDB/Customer_Master.git $WISE_BASE_DIR && echo -e \"Digite \e[91m'exit'\e[0m para seguir com os próximos passos.\" "  
 INSTALL_SCRIPT=/home/$WISE_ADMIN_USER/download_master.sh
 echo -e "$GIT_COMMAND" > $INSTALL_SCRIPT
 chown $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $INSTALL_SCRIPT
@@ -91,6 +88,8 @@ echo -e "digite:\e[91m ~/download_master.sh\e[0m\n"
 #echo -e "\e[0m"
 su $WISE_ADMIN_USER
 
+# Criação da área do cliente
+mkdir -p $WISE_BASE_DIR/customer && chown oracle.oinstall $WISE_BASE_DIR/customer
 clear
 echo -e "Você está logado com o usuário \"oracle\""
 echo -e "Siga os passos abaixo para criar a área de configuração do cliente:\n"
@@ -111,7 +110,7 @@ echo -e "     e faça as configurações necessárias.\n"
 echo -e "  8) Copie o template \e[34m.SID.db.cfg.template\e[0m para um arquivo no formato \e[34mSID.db.cfg\e[0m"
 echo -e "     e faça as configurações necessárias."
 echo -e "     OBS: Troque a string \"SID\" pelo nome apropriado da instância.\n"
-echo -e "Após a execução dos passos acima, digite \e[91m'exit'\e[0m para finalizar o processo de instalação.\n"
+echo -e "\nApós a execução dos passos acima, digite \e[91m'exit'\e[0m para finalizar o processo de instalação.\n"
 
 su oracle
 
