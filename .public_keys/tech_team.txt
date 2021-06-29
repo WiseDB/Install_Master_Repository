@@ -1,0 +1,6 @@
+admin_wise
+caio_wise
+fernando_wise
+rodrigo_wise
+tech_team.txt
+thiago_wise
