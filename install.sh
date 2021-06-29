@@ -38,30 +38,43 @@ yum -y install mutt
 # Create Groups and Users
 echo -e "\nCriando estrutura de Usuários, Grupos e Diretórios\n"
 groupadd $WISE_ADMIN_GROUP
-useradd $WISE_ADMIN_USER -g $WISE_ADMIN_GROUP -G wheel,oinstall && usermod --password $(openssl passwd -1 nomanager) admin_wise 
-useradd rodrigo_wise -g $WISE_ADMIN_GROUP -G wheel,oinstall && usermod --password $(openssl passwd -1 nomanager) rodrigo_wise
-useradd fernando_wise -g $WISE_ADMIN_GROUP -G wheel,oinstall && usermod --password $(openssl passwd -1 nomanager) fernando_wise
-useradd caio_wise -g $WISE_ADMIN_GROUP -G oinstall && usermod --password $(openssl passwd -1 nomanager) caio_wise
 
-# Configura o .bash_profile para o novo usuário.
-BASH_PROFILE=/home/$WISE_ADMIN_USER/.bash_profile
-echo -e "\n\n#Parametros para carga dos scripts da Wise" >> $BASH_PROFILE
-echo -e "export WISE_BASE_DIR=$WISE_BASE_DIR" >> $BASH_PROFILE
-echo -e "source $WISE_BASE_DIR/bin/wisedb_library.sh" >> $BASH_PROFILE
+# Criacao ou configuracao dos usuarios administradores
+cat tech_team.txt |while read DBA_USER
+do 
+	# Cria o usuario (exceto se o usuario for "oracle")
+	if [ "$DBA_USER" != "oracle" ]; then
+		echo -e "Usuario $DBA_USER criado com sucesso."
+		useradd $DBA_USER -g $WISE_ADMIN_GROUP -G wheel && usermod -aG oinstall $DBA_USER
+	fi
 
-# Configura o .bash_profile para o usuário ORACLE.
-BASH_PROFILE=/home/oracle/.bash_profile
-echo -e "\n\n#Parametros para carga dos scripts da Wise" >> $BASH_PROFILE
-echo -e "export WISE_BASE_DIR=$WISE_BASE_DIR" >> $BASH_PROFILE
-echo -e "source $WISE_BASE_DIR/bin/wisedb_library.sh" >> $BASH_PROFILE
+	# Configura o .bash_profile para o usuairo
+	BASH_PROFILE=/home/$DBA_USER/.bash_profile
+	echo -e "\n\n#Parametros para carga dos scripts da Wise" >> $BASH_PROFILE
+	echo -e "export WISE_BASE_DIR=$WISE_BASE_DIR" >> $BASH_PROFILE
+	echo -e "source $WISE_BASE_DIR/bin/wisedb_library.sh" >> $BASH_PROFILE
+	
+	# Verifica se o usuario ja possui o par de chaves SSH e cria se for necessario
+	if [ -f /home/$DBA_USER/.ssh/id_rsa.pub ]; then
+	        echo -e "As chaves do usuario $DBA_USER ja existem."
+	else
+	        echo -e "Criando novas chaves para o usuario $DBA_USER."
+	        sudo -H -u $DBA_USER bash -c 'ssh-keygen -b 2048 -f ~/.ssh/id_rsa -t rsa -q -N ""'
+	fi
+	
+	# Adiciona a chave publica do respectivo DBA_USER
+	DBA_USER_PUBLIC_KEY=./.public_keys/$DBA_USER.pub
+	DBA_USER_AUTHORIZED_KEYS=/home/$DBA_USER/.ssh/authorized_keys
+	if [ -f $DBA_USER_PUBLIC_KEY ]; then
+		cat $DBA_USER_PUBLIC_KEY >> $DBA_USER_AUTHORIZED_KEYS
+		chmod 600 $DBA_USER_AUTHORIZED_KEYS
+		chown ${DBA_USER}.${WISE_ADMIN_GROUP} $DBA_USER_AUTHORIZED_KEYS
+	else
+		echo -e "Chaves SSH nao encontradas para o usuario $DBA_USER."
+	fi
+done
 
-# Verifica se o usuário "oracle" já possui o par de chaves SSH
-if [ -f /home/oracle/.ssh/id_rsa.pub ]; then
-        echo -e "As chaves do usuário ORACLE já existem."
-else
-        echo -e "Criando novas chaves para o usuário ORACLE"
-        sudo -H -u oracle bash -c 'ssh-keygen -b 2048 -f ~/.ssh/id_rsa -t rsa -q -N ""'
-fi
+
 
 # Criação e permissão do diretório
 mkdir -p $WISE_BASE_DIR
