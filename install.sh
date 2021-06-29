@@ -20,7 +20,7 @@ read WUSER
 echo -e -n "Nome do GRUPO principal da Wise (default: wisedb): "
 read WGROUP
 [ -z "$WGROUP" ] && WGROUP=wisedb
-echo -e -n "Nome do REPOSITORIO GitHub do cliente (ex: Customer_\e[34mNomeEmpresa\e[0m): "
+echo -e -n "Digite o nome da EMPRESA que sera utilizado no repositorio GitHub do cliente. Sem espacos! (ex: \e[34mMaxCompany\e[0m): "
 read WREPO
 [ -z "$WREPO" ] && WREPO=NomeEmpresa
 
