@@ -96,11 +96,7 @@ echo ""
 INSTALL_SCRIPT=/home/$WISE_ADMIN_USER/download_master.sh
 # Clona o repositorio Master
 GIT_COMMAND="git clone git@github.com:WiseDB/Customer_Master.git $WISE_BASE_DIR && echo -e \"\nDigite \e[91m'exit'\e[0m para seguir com os próximos passos.\" "  
-# Insere a linha de execucao da atualizacao automatica do repositorio master
-CRONTAB_AUTO_UPDATE_MASTER="$WISE_BASE_DIR/bin/add_to_crontab.sh \"*/30   *   *   *   *  \" \"export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_master.sh\""
 echo -e "$GIT_COMMAND"    >  $INSTALL_SCRIPT
-echo -e "$CRONTAB_HEADER" >> $INSTALL_SCRIPT
-echo -e "$CRONTAB_AUTO_UPDATE_MASTER" >> $INSTALL_SCRIPT
 
 chown $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $INSTALL_SCRIPT
 chmod 755 $INSTALL_SCRIPT
@@ -118,8 +114,8 @@ if [ $(crontab -l -u $WISE_ADMIN_USER |wc -l) -eq 0 ]; then
 	cat $WISE_BASE_DIR/bin/crontab_header.txt | crontab -u $WISE_ADMIN_USER -
 fi
 # Comando para sincronismo do repositorio master
-sudo -i -u $WISE_ADMIN_USER $WISE_BASE_DIR/bin/add_to_crontab.sh "*/30   *   *   *   *  " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_master.sh"
-sudo -i -u oracle           $WISE_BASE_DIR/bin/add_to_crontab.sh "*/30   *   *   *   *  " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_customer.sh"
+sudo -i -u $WISE_ADMIN_USER $WISE_BASE_DIR/bin/add_to_crontab.sh "*/30    *    *    *    *  " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_master.sh"
+sudo -i -u oracle           $WISE_BASE_DIR/bin/add_to_crontab.sh "*/30    *    *    *    *  " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_customer.sh"
 
 ####################################################################
 # Criação da área do cliente
