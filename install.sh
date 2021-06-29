@@ -46,6 +46,10 @@ do
 	if [ "$DBA_USER" != "oracle" ]; then
 		echo -e "Usuario $DBA_USER criado com sucesso."
 		useradd $DBA_USER -g $WISE_ADMIN_GROUP -G wheel && usermod -aG oinstall $DBA_USER
+	else
+		# O usuario "oracle" sera adicionado ao grupo da WiseDb
+		echo -e "Usuario $DBA_USER adicionado ao grupo $WISE_ADMIN_GROUP"
+		usermod -aG $WISE_ADMIN_GROUP $DBA_USER
 	fi
 
 	# Configura o .bash_profile para o usuairo
