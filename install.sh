@@ -94,12 +94,13 @@ read -n 1 -s -r -p "Após adicionar a chave SSH, tecle algo para continuar..."
 echo ""
 
 INSTALL_SCRIPT=/home/$WISE_ADMIN_USER/download_master.sh
+# Clona o repositorio Master
 GIT_COMMAND="git clone git@github.com:WiseDB/Customer_Master.git $WISE_BASE_DIR && echo -e \"\nDigite \e[91m'exit'\e[0m para seguir com os próximos passos.\" "  
-if [ $(crontab -l|wc -l) -eq 0 ]; then
-	CRONTAB_COMMAND="cat $WISE_BASE_DIR | crontab -"
-fi
+# Insere a linha de execucao da atualizacao automatica do repositorio master
+CRONTAB_AUTO_UPDATE_MASTER="$WISE_BASE_DIR/bin/add_to_crontab.sh \"*/30   *   *   *   *  \" \"export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_master.sh\""
 echo -e "$GIT_COMMAND"    >  $INSTALL_SCRIPT
-echo -e "$CRONTAB_COMMAND >> $INSTALL_SCRIPT
+echo -e "$CRONTAB_HEADER" >> $INSTALL_SCRIPT
+echo -e "$CRONTAB_AUTO_UPDATE_MASTER" >> $INSTALL_SCRIPT
 
 chown $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $INSTALL_SCRIPT
 chmod 755 $INSTALL_SCRIPT
@@ -109,32 +110,45 @@ echo -e "digite:\e[91m ~/download_master.sh\e[0m\n"
 #echo -e "\e[0m"
 su $WISE_ADMIN_USER
 
+####################################################################
+# Atualizacao do crontab para o usuario administrador da Wise e oracle
+####################################################################
+# Header explicativo do crontab 
+if [ $(crontab -l -u $WISE_ADMIN_USER |wc -l) -eq 0 ]; then
+	cat $WISE_BASE_DIR/bin/crontab_header.txt | crontab -u $WISE_ADMIN_USER -
+fi
+# Comando para sincronismo do repositorio master
+sudo -i -u $WISE_ADMIN_USER $WISE_BASE_DIR/bin/add_to_crontab.sh "*/30   *   *   *   *  " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_master.sh"
+sudo -i -u oracle           $WISE_BASE_DIR/bin/add_to_crontab.sh "*/30   *   *   *   *  " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_customer.sh"
+
+####################################################################
 # Criação da área do cliente
+####################################################################
 mkdir -p $WISE_BASE_DIR/customer && chown oracle.oinstall $WISE_BASE_DIR/customer
 clear
-echo -e "Você está logado com o usuário \"oracle\""
-echo -e "Siga os passos abaixo para criar a área de configuração do cliente:\n"
+echo -e "Você esta logado com o usuario \"oracle\""
+echo -e "Siga os passos abaixo para criar a area de configuracao do cliente:\n"
 echo -e "  1) Acesse o link do template\e[34m https://github.com/WiseDB/Customer_Template\e[0m.\n"
-echo -e "  2) Clique no botão\e[34m [Use this template]\e[0m para criar o repositório do cliente.\n"
-echo -e "  3) Escolha um nome para o repositório (privado), com o formato:\e[34m Customer$WISE_REPOSITORY\e[0m\n"
+echo -e "  2) Clique no botao\e[34m [Use this template]\e[0m para criar o repositorio do cliente.\n"
+echo -e "  3) Informe o nome do repositorio com o seguinte formato:\e[34m Customer_$WISE_REPOSITORY\e[0m\n"
 echo -e "  4) Adicione a chave SSH do usuário \"oracle\" ao novo repositório."
-echo -e "     Atenção: Use a opção de permitir gravação"
-echo -e "     Digite o caminho para página das chaves SSH:"
+echo -e "     Atenção: Use a opcao de permitir gravacao"
+echo -e "     Digite o caminho para pagina das chaves SSH:"
 echo -e "     \e[34mhttps://github.com/WiseDB/Customer_$WISE_REPOSITORY/settings/keys\e[0m"
 echo -e "     $(cat /home/oracle/.ssh/id_rsa.pub)\n"
-echo -e "  5) Crie um clone através do comando abaixo:"
+echo -e "  5) Crie um clone atraves do comando abaixo:"
 echo -e "     git clone git@github.com:WiseDB/\e[34mCustomer_$WISE_REPOSITORY\e[0m.git $WISE_BASE_DIR/customer\n"
-echo -e "  6) Entre no diretório de configuração: "
+echo -e "  6) Entre no diretorio de configuracao: "
 echo -e "     cd $WISE_BASE_DIR/customer/config\n"
 echo -e "  7) Copie o template \e[34m.customer_info.cfg.template\e[0m para um arquivo de nome \e[34mcustomer.cfg\e[0m"
-echo -e "     e faça as configurações necessárias.\n"
+echo -e "     e faca as configuracoes necessarias.\n"
 echo -e "  8) Copie o template \e[34m.SID.db.cfg.template\e[0m para um arquivo no formato \e[34mSID.db.cfg\e[0m"
-echo -e "     e faça as configurações necessárias."
-echo -e "     OBS: Troque a string \"SID\" pelo nome apropriado da instância.\n"
-echo -e "\nApós a execução dos passos acima, digite \e[91m'exit'\e[0m para finalizar o processo de instalação.\n"
+echo -e "     e faca as configuracoes necessarias."
+echo -e "     OBS: Troque a string \"SID\" pelo nome apropriado da instancia.\n"
+echo -e "\nApos a execucao dos passos acima, digite \e[91m'exit'\e[0m para finalizar o processo de instalacao.\n"
 
 su oracle
 
-echo -e "Você está novamente logado com o ROOT."
+echo -e "Voce esta novamente logado com o ROOT."
 
 
