@@ -8,9 +8,9 @@ then
 fi
 
 clear;
-echo -e "••••••••••••••••••••••••••••••••••••••••••••••••••••"
+echo -e "----------------------------------------------------"
 echo -e "Instalação do repositório da Wise Database Solutions"
-echo -e "••••••••••••••••••••••••••••••••••••••••••••••••••••\n"
+echo -e "----------------------------------------------------\n"
 echo -e -n "Nome do diretório BASE da Wise (default: /opt/WiseDb): "
 read WDIR
 [ -z "$WDIR" ] && WDIR=/opt/WiseDb
@@ -20,7 +20,7 @@ read WUSER
 echo -e -n "Nome do GRUPO principal da Wise (default: wisedb): "
 read WGROUP
 [ -z "$WGROUP" ] && WGROUP=wisedb
-echo -e -n "Nome do REPOSITÓRIO GitHub do cliente (ex: Customer_\e[34mNomeEmpresa\e[0m): "
+echo -e -n "Nome do REPOSITORIO GitHub do cliente (ex: Customer_\e[34mNomeEmpresa\e[0m): "
 read WREPO
 [ -z "$WREPO" ] && WREPO=NomeEmpresa
 
@@ -77,7 +77,7 @@ echo ""
 read -n 1 -s -r -p "Após adicionar a chave SSH, tecle algo para continuar..."
 echo ""
 
-GIT_COMMAND="git clone git@github.com:WiseDB/Customer_Master.git $WISE_BASE_DIR && echo -e \"Digite \e[91m'exit'\e[0m para seguir com os próximos passos.\" "  
+GIT_COMMAND="git clone git@github.com:WiseDB/Customer_Master.git $WISE_BASE_DIR && echo -e \"\nDigite \e[91m'exit'\e[0m para seguir com os próximos passos.\" "  
 INSTALL_SCRIPT=/home/$WISE_ADMIN_USER/download_master.sh
 echo -e "$GIT_COMMAND" > $INSTALL_SCRIPT
 chown $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $INSTALL_SCRIPT
@@ -95,14 +95,14 @@ echo -e "Você está logado com o usuário \"oracle\""
 echo -e "Siga os passos abaixo para criar a área de configuração do cliente:\n"
 echo -e "  1) Acesse o link do template\e[34m https://github.com/WiseDB/Customer_Template\e[0m.\n"
 echo -e "  2) Clique no botão\e[34m [Use this template]\e[0m para criar o repositório do cliente.\n"
-echo -e "  3) Escolha um nome para o repositório (privado), com o formato:\e[34m Customer_NomeEmpresa\e[0m\n"
+echo -e "  3) Escolha um nome para o repositório (privado), com o formato:\e[34m Customer$WISE_REPOSITORY\e[0m\n"
 echo -e "  4) Adicione a chave SSH do usuário \"oracle\" ao novo repositório."
 echo -e "     Atenção: Use a opção de permitir gravação"
 echo -e "     Digite o caminho para página das chaves SSH:"
-echo -e "     \e[34mhttps://github.com/WiseDB/Customer_NomeEmpresa/settings/keys\e[0m"
+echo -e "     \e[34mhttps://github.com/WiseDB/Customer_$WISE_REPOSITORY/settings/keys\e[0m"
 echo -e "     $(cat /home/oracle/.ssh/id_rsa.pub)\n"
 echo -e "  5) Crie um clone através do comando abaixo:"
-echo -e "     git clone git@github.com:WiseDB/\e[34mCustomer_NomeEmpresa\e[0m.git $WISE_BASE_DIR/customer\n"
+echo -e "     git clone git@github.com:WiseDB/\e[34mCustomer_$WISE_REPOSITORY\e[0m.git $WISE_BASE_DIR/customer\n"
 echo -e "  6) Entre no diretório de configuração: "
 echo -e "     cd $WISE_BASE_DIR/customer/config\n"
 echo -e "  7) Copie o template \e[34m.customer_info.cfg.template\e[0m para um arquivo de nome \e[34mcustomer.cfg\e[0m"
