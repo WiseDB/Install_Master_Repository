@@ -115,7 +115,7 @@ if [ $(crontab -l -u $WISE_ADMIN_USER |wc -l) -eq 0 ]; then
 fi
 # Comando para sincronismo do repositorio master
 sudo -i -u $WISE_ADMIN_USER $WISE_BASE_DIR/bin/add_to_crontab.sh "*/30 *    *    *    *   " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_master.sh"
-sudo -i -u oracle           $WISE_BASE_DIR/bin/add_to_crontab.sh "*/30 *    *    *    *   " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_customer.sh"
+sudo -i -u oracle           $WISE_BASE_DIR/bin/add_to_crontab.sh "*/31 *    *    *    *   " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_customer.sh"
 
 ####################################################################
 # Criação da área do cliente
