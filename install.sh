@@ -93,9 +93,14 @@ echo ""
 read -n 1 -s -r -p "Após adicionar a chave SSH, tecle algo para continuar..."
 echo ""
 
-GIT_COMMAND="git clone git@github.com:WiseDB/Customer_Master.git $WISE_BASE_DIR && echo -e \"\nDigite \e[91m'exit'\e[0m para seguir com os próximos passos.\" "  
 INSTALL_SCRIPT=/home/$WISE_ADMIN_USER/download_master.sh
-echo -e "$GIT_COMMAND" > $INSTALL_SCRIPT
+GIT_COMMAND="git clone git@github.com:WiseDB/Customer_Master.git $WISE_BASE_DIR && echo -e \"\nDigite \e[91m'exit'\e[0m para seguir com os próximos passos.\" "  
+if [ $(crontab -l|wc -l) -eq 0 ]; then
+	CRONTAB_COMMAND="cat $WISE_BASE_DIR | crontab -"
+fi
+echo -e "$GIT_COMMAND"    >  $INSTALL_SCRIPT
+echo -e "$CRONTAB_COMMAND >> $INSTALL_SCRIPT
+
 chown $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $INSTALL_SCRIPT
 chmod 755 $INSTALL_SCRIPT
 echo -e "\n\nExecute o script \"download_master.sh\" para baixar o repositório.\n"
