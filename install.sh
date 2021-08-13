@@ -107,6 +107,11 @@ echo -e "digite:\e[91m ~/download_master.sh\e[0m\n"
 su $WISE_ADMIN_USER
 
 ####################################################################
+# Correcao de permissoes para o grupo
+####################################################################
+chmod 775 $WISE_BASE_DIR/logs
+
+####################################################################
 # Atualizacao do crontab para o usuario administrador da Wise e oracle
 ####################################################################
 # Header explicativo do crontab 
