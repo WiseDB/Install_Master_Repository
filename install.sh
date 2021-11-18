@@ -115,14 +115,28 @@ chmod 775 $WISE_BASE_DIR/logs
 # Atualizacao do crontab para o usuario administrador da Wise e oracle
 ####################################################################
 # Header explicativo do crontab 
-if [ $(crontab -l -u $WISE_ADMIN_USER |wc -l) -eq 0 ]; then
-	cat $WISE_BASE_DIR/bin/crontab_header.txt | crontab -u $WISE_ADMIN_USER -
-fi
+#>> if [ $(crontab -l -u $WISE_ADMIN_USER |wc -l) -eq 0 ]; then
+#>> 	cat $WISE_BASE_DIR/bin/crontab_header.txt | crontab -u $WISE_ADMIN_USER -
+#>> fi
 # Comando para sincronismo do repositorio master
-echo -e "WISE_ADMIN_USER: $WISE_ADMIN_USER"
-echo -e "WISE_BASE_DIR..: $WISE_BASE_DIR"
-sudo -i -u $WISE_ADMIN_USER $WISE_BASE_DIR/bin/add_to_crontab.sh "*/31 *    *    *    *   " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_master.sh"
-sudo -i -u oracle           $WISE_BASE_DIR/bin/add_to_crontab.sh "*/32 *    *    *    *   " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_customer.sh"
+#>> echo -e "WISE_ADMIN_USER: $WISE_ADMIN_USER"
+#>> echo -e "WISE_BASE_DIR..: $WISE_BASE_DIR"
+#>> sudo -i -u $WISE_ADMIN_USER $WISE_BASE_DIR/bin/add_to_crontab.sh "*/31 *    *    *    *   " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_master.sh"
+#>> sudo -i -u oracle           $WISE_BASE_DIR/bin/add_to_crontab.sh "*/32 *    *    *    *   " "export WISE_BASE_DIR=$WISE_BASE_DIR && $WISE_BASE_DIR/bin/auto_update_customer.sh"
+
+CRONTAB_USER=oracle
+PROGRAM=$WISE_BASE_DIR/bin/auto_update_customer.sh
+if [ $(crontab -l -u $CRONTAB_USER |grep "$PROGRAM"| wc -l) -eq 0 ]; then
+        (crontab -l -u $CRONTAB_USER ; cat crontab_header.txt)| crontab -u $CRONTAB_USER -
+        (crontab -l -u $CRONTAB_USER ; echo -e "  *    *    *    *    *   export WISE_BASE_DIR=$WISE_BASE_DIR && $PROGRAM")| crontab -u $CRONTAB_USER -
+fi
+
+CRONTAB_USER=$WISE_ADMIN_USER
+PROGRAM=$WISE_BASE_DIR/bin/auto_update_master.sh
+if [ $(crontab -l -u $CRONTAB_USER |grep "$PROGRAM"| wc -l) -eq 0 ]; then
+        (crontab -l -u $CRONTAB_USER ; cat crontab_header.txt)| crontab -u $CRONTAB_USER -
+        (crontab -l -u $CRONTAB_USER ; echo -e "  *    *    *    *    *   export WISE_BASE_DIR=$WISE_BASE_DIR && $PROGRAM")| crontab -u $CRONTAB_USER -
+fi
 
 ####################################################################
 # Criação da área do cliente
