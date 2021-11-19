@@ -128,14 +128,14 @@ CRONTAB_USER=oracle
 PROGRAM=$WISE_BASE_DIR/bin/auto_update_customer.sh
 if [ $(crontab -l -u $CRONTAB_USER |grep "$PROGRAM"| wc -l) -eq 0 ]; then
         (crontab -l -u $CRONTAB_USER ; cat crontab_header.txt)| crontab -u $CRONTAB_USER -
-        (crontab -l -u $CRONTAB_USER ; echo -e "  *    *    *    *    *   export WISE_BASE_DIR=$WISE_BASE_DIR && $PROGRAM")| crontab -u $CRONTAB_USER -
+        (crontab -l -u $CRONTAB_USER ; echo -e "  30   *    *    *    *   export WISE_BASE_DIR=$WISE_BASE_DIR && $PROGRAM")| crontab -u $CRONTAB_USER -
 fi
 
 CRONTAB_USER=$WISE_ADMIN_USER
 PROGRAM=$WISE_BASE_DIR/bin/auto_update_master.sh
 if [ $(crontab -l -u $CRONTAB_USER |grep "$PROGRAM"| wc -l) -eq 0 ]; then
         (crontab -l -u $CRONTAB_USER ; cat crontab_header.txt)| crontab -u $CRONTAB_USER -
-        (crontab -l -u $CRONTAB_USER ; echo -e "  *    *    *    *    *   export WISE_BASE_DIR=$WISE_BASE_DIR && $PROGRAM")| crontab -u $CRONTAB_USER -
+        (crontab -l -u $CRONTAB_USER ; echo -e "  30   *    *    *    *   export WISE_BASE_DIR=$WISE_BASE_DIR && $PROGRAM")| crontab -u $CRONTAB_USER -
 fi
 
 ####################################################################
