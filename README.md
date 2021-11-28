@@ -1,4 +1,6 @@
-# Install_Master_Repository
+# Descrição
 Repositório público para facilitar a instalação
 
-29/jun/2021 17:02
+# Utilização
+mkdir /tmp/inst && cd /tmp/inst
+git clone https://github.com/WiseDB/Install_Master_Repository.git /tmp/inst && ./install.sh
