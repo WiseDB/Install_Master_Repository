@@ -84,6 +84,12 @@ done
 mkdir -p $WISE_BASE_DIR
 chown -R $WISE_ADMIN_USER.$WISE_ADMIN_GROUP $WISE_BASE_DIR
 chmod g+w $WISE_BASE_DIR
+chmod g+w $WISE_BASE_DIR/Report/csv 
+chmod g+w $WISE_BASE_DIR/Report/csv/databases 
+chmod g+w $WISE_BASE_DIR/Report/csv/servers 
+chmod g+w $WISE_BASE_DIR/Report/output 
+chmod g+w $WISE_BASE_DIR/Report/output/databases 
+chmod g+w $WISE_BASE_DIR/Report/output/servers
 
 # Configuração das chaves SSH no repositório Customer_Master
 sudo -H -u $WISE_ADMIN_USER bash -c 'echo -e "\n\nEntre no repositório da Wise: \e[91mhttps://github.com/WiseDB/Customer_Master/settings/keys\e[0m"'
